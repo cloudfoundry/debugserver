@@ -116,7 +116,7 @@ var _ = Describe("CF Debug Server", func() {
 			})
 		})
 
-		port := 10005
+		port := 21005
 		for level, acceptedForms := range map[lager.LogLevel][]string{
 			lager.DEBUG: []string{"debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG))},
 			lager.INFO:  []string{"info", "INFO", "i", strconv.Itoa(int(lager.INFO))},
