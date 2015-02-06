@@ -126,6 +126,7 @@ var _ = Describe("CF Debug Server", func() {
 			for _, form := range acceptedForms {
 				port++
 
+				level := level
 				form := form
 				testPort := port
 
