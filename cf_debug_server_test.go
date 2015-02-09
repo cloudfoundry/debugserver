@@ -1,14 +1,12 @@
 package cf_debug_server_test
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
-	"strconv"
 
 	cf_debug_server "github.com/cloudfoundry-incubator/cf-debug-server"
 	"github.com/pivotal-golang/lager"
@@ -115,44 +113,5 @@ var _ = Describe("CF Debug Server", func() {
 				Ω(netErr.Op).Should(Equal("listen"))
 			})
 		})
-
-		port := 21005
-		for level, acceptedForms := range map[lager.LogLevel][]string{
-			lager.DEBUG: []string{"debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG))},
-			lager.INFO:  []string{"info", "INFO", "i", strconv.Itoa(int(lager.INFO))},
-			lager.ERROR: []string{"error", "ERROR", "e", strconv.Itoa(int(lager.ERROR))},
-			lager.FATAL: []string{"fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL))},
-		} {
-			for _, form := range acceptedForms {
-				port++
-
-				level := level
-				form := form
-				testPort := port
-
-				It("can reconfigure the given sink with "+form, func() {
-					address := fmt.Sprintf("127.0.0.1:%d", testPort)
-
-					err := cf_debug_server.Run(address, sink)
-					Ω(err).ShouldNot(HaveOccurred())
-
-					sink.Log(level, []byte("hello before level change"))
-					Ω(logBuf).ShouldNot(gbytes.Say("hello before level change"))
-
-					request, err := http.NewRequest("PUT", fmt.Sprintf("http://%s/log-level", address), bytes.NewBufferString(form))
-					Ω(err).ShouldNot(HaveOccurred())
-
-					response, err := http.DefaultClient.Do(request)
-					Ω(err).ShouldNot(HaveOccurred())
-
-					response.Body.Close()
-
-					Ω(response.StatusCode).Should(Equal(http.StatusOK))
-
-					sink.Log(level, []byte("hello after level change"))
-					Ω(logBuf).Should(gbytes.Say("hello after level change"))
-				})
-			}
-		}
 	})
 })
