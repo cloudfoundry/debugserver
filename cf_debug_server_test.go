@@ -6,11 +6,11 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
-	"os"
 
 	cf_debug_server "github.com/cloudfoundry-incubator/cf-debug-server"
 	"github.com/pivotal-golang/lager"
 	"github.com/tedsuo/ifrit"
+	"github.com/tedsuo/ifrit/ginkgomon"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -22,10 +22,12 @@ var _ = Describe("CF Debug Server", func() {
 		logBuf *gbytes.Buffer
 		sink   *lager.ReconfigurableSink
 
+		address string
 		process ifrit.Process
 	)
 
 	BeforeEach(func() {
+		address = "127.0.0.1:10003"
 		logBuf = gbytes.NewBuffer()
 		sink = lager.NewReconfigurableSink(
 			lager.NewWriterSink(logBuf, lager.DEBUG),
@@ -35,10 +37,7 @@ var _ = Describe("CF Debug Server", func() {
 	})
 
 	AfterEach(func() {
-		if process != nil {
-			process.Signal(os.Interrupt)
-			<-process.Wait()
-		}
+		ginkgomon.Interrupt(process)
 	})
 
 	Describe("AddFlags", func() {
@@ -68,7 +67,6 @@ var _ = Describe("CF Debug Server", func() {
 
 			Context("when set", func() {
 				It("returns the address", func() {
-					address := "127.0.0.1:10003"
 					flags.Parse([]string{"-debugAddr", address})
 
 					Ω(cf_debug_server.DebugAddress(flags)).Should(Equal(address))
@@ -85,9 +83,8 @@ var _ = Describe("CF Debug Server", func() {
 
 	Describe("Run", func() {
 		It("serves debug information", func() {
-			address := "127.0.0.1:10003"
-
-			err := cf_debug_server.Run(address, sink)
+			var err error
+			process, err = cf_debug_server.Run(address, sink)
 			Ω(err).ShouldNot(HaveOccurred())
 
 			debugResponse, err := http.Get(fmt.Sprintf("http://%s/debug/pprof/goroutine", address))
@@ -97,16 +94,15 @@ var _ = Describe("CF Debug Server", func() {
 			Ω(err).ShouldNot(HaveOccurred())
 
 			Ω(debugInfo).Should(ContainSubstring("goroutine profile: total"))
+
 		})
 
 		Context("when the address is already in use", func() {
 			It("returns an error", func() {
-				address := "127.0.0.1:10004"
-
 				_, err := net.Listen("tcp", address)
 				Ω(err).ShouldNot(HaveOccurred())
 
-				err = cf_debug_server.Run(address, sink)
+				process, err = cf_debug_server.Run(address, sink)
 				Ω(err).Should(HaveOccurred())
 				Ω(err).Should(BeAssignableToTypeOf(&net.OpError{}))
 				netErr := err.(*net.OpError)
