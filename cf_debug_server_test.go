@@ -22,12 +22,10 @@ var _ = Describe("CF Debug Server", func() {
 		logBuf *gbytes.Buffer
 		sink   *lager.ReconfigurableSink
 
-		address string
 		process ifrit.Process
 	)
 
 	BeforeEach(func() {
-		address = "127.0.0.1:10003"
 		logBuf = gbytes.NewBuffer()
 		sink = lager.NewReconfigurableSink(
 			lager.NewWriterSink(logBuf, lager.DEBUG),
