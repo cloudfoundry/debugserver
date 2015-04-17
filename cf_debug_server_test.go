@@ -1,11 +1,13 @@
 package cf_debug_server_test
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
+	"strconv"
 
 	cf_debug_server "github.com/cloudfoundry-incubator/cf-debug-server"
 	"github.com/pivotal-golang/lager"
@@ -96,10 +98,20 @@ var _ = Describe("CF Debug Server", func() {
 		})
 
 		Context("when the address is already in use", func() {
-			It("returns an error", func() {
-				_, err := net.Listen("tcp", address)
-				Ω(err).ShouldNot(HaveOccurred())
+			var listener net.Listener
 
+			BeforeEach(func() {
+				var err error
+				listener, err = net.Listen("tcp", address)
+				Ω(err).ShouldNot(HaveOccurred())
+			})
+
+			AfterEach(func() {
+				listener.Close()
+			})
+
+			It("returns an error", func() {
+				var err error
 				process, err = cf_debug_server.Run(address, sink)
 				Ω(err).Should(HaveOccurred())
 				Ω(err).Should(BeAssignableToTypeOf(&net.OpError{}))
@@ -107,5 +119,45 @@ var _ = Describe("CF Debug Server", func() {
 				Ω(netErr.Op).Should(Equal("listen"))
 			})
 		})
+
+		Context("checking log-level endpoint", func() {
+			validForms := map[lager.LogLevel][]string{
+				lager.DEBUG: []string{"debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG))},
+				lager.INFO:  []string{"info", "INFO", "i", strconv.Itoa(int(lager.INFO))},
+				lager.ERROR: []string{"error", "ERROR", "e", strconv.Itoa(int(lager.ERROR))},
+				lager.FATAL: []string{"fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL))},
+			}
+
+			//This will add another 16 unit tests to the suit
+			for level, acceptedForms := range validForms {
+				for _, form := range acceptedForms {
+					testLevel := level
+					testForm := form
+
+					It("can reconfigure the given sink with "+form, func() {
+						var err error
+						process, err = cf_debug_server.Run(address, sink)
+						Ω(err).ShouldNot(HaveOccurred())
+
+						sink.Log(testLevel, []byte("hello before level change"))
+						Eventually(logBuf).ShouldNot(gbytes.Say("hello before level change"))
+
+						request, err := http.NewRequest("PUT", fmt.Sprintf("http://%s/log-level", address), bytes.NewBufferString(testForm))
+
+						Ω(err).ShouldNot(HaveOccurred())
+
+						response, err := http.DefaultClient.Do(request)
+						Ω(err).ShouldNot(HaveOccurred())
+
+						Ω(response.StatusCode).Should(Equal(http.StatusOK))
+						response.Body.Close()
+
+						sink.Log(testLevel, []byte("Logs sent with log-level "+testForm))
+						Eventually(logBuf).Should(gbytes.Say("Logs sent with log-level " + testForm))
+					})
+				}
+			}
+		})
+
 	})
 })
