@@ -46,7 +46,7 @@ var _ = Describe("CF Debug Server", func() {
 			cf_debug_server.AddFlags(flags)
 
 			f := flags.Lookup(cf_debug_server.DebugFlag)
-			Ω(f).ShouldNot(BeNil())
+			Expect(f).NotTo(BeNil())
 		})
 	})
 
@@ -54,7 +54,7 @@ var _ = Describe("CF Debug Server", func() {
 		Context("when flags are not added", func() {
 			It("returns the empty string", func() {
 				flags := flag.NewFlagSet("test", flag.ContinueOnError)
-				Ω(cf_debug_server.DebugAddress(flags)).Should(Equal(""))
+				Expect(cf_debug_server.DebugAddress(flags)).To(Equal(""))
 			})
 		})
 
@@ -69,13 +69,13 @@ var _ = Describe("CF Debug Server", func() {
 				It("returns the address", func() {
 					flags.Parse([]string{"-debugAddr", address})
 
-					Ω(cf_debug_server.DebugAddress(flags)).Should(Equal(address))
+					Expect(cf_debug_server.DebugAddress(flags)).To(Equal(address))
 				})
 			})
 
 			Context("when not set", func() {
 				It("returns the empty string", func() {
-					Ω(cf_debug_server.DebugAddress(flags)).Should(Equal(""))
+					Expect(cf_debug_server.DebugAddress(flags)).To(Equal(""))
 				})
 			})
 		})
@@ -85,15 +85,15 @@ var _ = Describe("CF Debug Server", func() {
 		It("serves debug information", func() {
 			var err error
 			process, err = cf_debug_server.Run(address, sink)
-			Ω(err).ShouldNot(HaveOccurred())
+			Expect(err).NotTo(HaveOccurred())
 
 			debugResponse, err := http.Get(fmt.Sprintf("http://%s/debug/pprof/goroutine", address))
-			Ω(err).ShouldNot(HaveOccurred())
+			Expect(err).NotTo(HaveOccurred())
 
 			debugInfo, err := ioutil.ReadAll(debugResponse.Body)
-			Ω(err).ShouldNot(HaveOccurred())
+			Expect(err).NotTo(HaveOccurred())
 
-			Ω(debugInfo).Should(ContainSubstring("goroutine profile: total"))
+			Expect(debugInfo).To(ContainSubstring("goroutine profile: total"))
 
 		})
 
@@ -103,7 +103,7 @@ var _ = Describe("CF Debug Server", func() {
 			BeforeEach(func() {
 				var err error
 				listener, err = net.Listen("tcp", address)
-				Ω(err).ShouldNot(HaveOccurred())
+				Expect(err).NotTo(HaveOccurred())
 			})
 
 			AfterEach(func() {
@@ -113,10 +113,10 @@ var _ = Describe("CF Debug Server", func() {
 			It("returns an error", func() {
 				var err error
 				process, err = cf_debug_server.Run(address, sink)
-				Ω(err).Should(HaveOccurred())
-				Ω(err).Should(BeAssignableToTypeOf(&net.OpError{}))
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(BeAssignableToTypeOf(&net.OpError{}))
 				netErr := err.(*net.OpError)
-				Ω(netErr.Op).Should(Equal("listen"))
+				Expect(netErr.Op).To(Equal("listen"))
 			})
 		})
 
@@ -137,19 +137,19 @@ var _ = Describe("CF Debug Server", func() {
 					It("can reconfigure the given sink with "+form, func() {
 						var err error
 						process, err = cf_debug_server.Run(address, sink)
-						Ω(err).ShouldNot(HaveOccurred())
+						Expect(err).NotTo(HaveOccurred())
 
 						sink.Log(testLevel, []byte("hello before level change"))
 						Eventually(logBuf).ShouldNot(gbytes.Say("hello before level change"))
 
 						request, err := http.NewRequest("PUT", fmt.Sprintf("http://%s/log-level", address), bytes.NewBufferString(testForm))
 
-						Ω(err).ShouldNot(HaveOccurred())
+						Expect(err).NotTo(HaveOccurred())
 
 						response, err := http.DefaultClient.Do(request)
-						Ω(err).ShouldNot(HaveOccurred())
+						Expect(err).NotTo(HaveOccurred())
 
-						Ω(response.StatusCode).Should(Equal(http.StatusOK))
+						Expect(response.StatusCode).To(Equal(http.StatusOK))
 						response.Body.Close()
 
 						sink.Log(testLevel, []byte("Logs sent with log-level "+testForm))
