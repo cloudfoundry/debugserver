@@ -139,7 +139,7 @@ var _ = Describe("CF Debug Server", func() {
 						process, err = cf_debug_server.Run(address, sink)
 						Expect(err).NotTo(HaveOccurred())
 
-						sink.Log(testLevel, []byte("hello before level change"))
+						sink.Log(lager.LogFormat{LogLevel: testLevel, Message: "hello before level change"})
 						Eventually(logBuf).ShouldNot(gbytes.Say("hello before level change"))
 
 						request, err := http.NewRequest("PUT", fmt.Sprintf("http://%s/log-level", address), bytes.NewBufferString(testForm))
@@ -152,7 +152,7 @@ var _ = Describe("CF Debug Server", func() {
 						Expect(response.StatusCode).To(Equal(http.StatusOK))
 						response.Body.Close()
 
-						sink.Log(testLevel, []byte("Logs sent with log-level "+testForm))
+						sink.Log(lager.LogFormat{LogLevel: testLevel, Message: "Logs sent with log-level " + testForm})
 						Eventually(logBuf).Should(gbytes.Say("Logs sent with log-level " + testForm))
 					})
 				}
