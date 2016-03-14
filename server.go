@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/pprof"
+	"runtime"
 	"strconv"
 
 	"github.com/pivotal-golang/lager"
@@ -68,6 +69,25 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 			sink.SetMinLevel(lager.ERROR)
 		case "fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL)):
 			sink.SetMinLevel(lager.FATAL)
+		}
+	}))
+	mux.Handle("/block-profile-rate", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_rate, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return
+		}
+
+		rate, err := strconv.Atoi(string(_rate))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		if rate <= 0 {
+			runtime.SetBlockProfileRate(0)
+		} else {
+			runtime.SetBlockProfileRate(rate)
 		}
 	}))
 
