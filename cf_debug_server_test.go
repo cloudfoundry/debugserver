@@ -1,4 +1,4 @@
-package cf_debug_server_test
+package debugserver_test
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strconv"
 
-	cf_debug_server "github.com/cloudfoundry-incubator/cf-debug-server"
+	cf_debug_server "code.cloudfoundry.org/debugserver"
 	"github.com/pivotal-golang/lager"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/ginkgomon"

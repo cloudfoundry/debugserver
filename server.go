@@ -1,4 +1,4 @@
-package cf_debug_server
+package debugserver
 
 import (
 	"flag"

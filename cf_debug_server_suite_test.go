@@ -1,4 +1,4 @@
-package cf_debug_server_test
+package debugserver_test
 
 import (
 	"fmt"
