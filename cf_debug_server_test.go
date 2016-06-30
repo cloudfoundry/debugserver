@@ -10,7 +10,7 @@ import (
 	"strconv"
 
 	cf_debug_server "code.cloudfoundry.org/debugserver"
-	"github.com/pivotal-golang/lager"
+	"code.cloudfoundry.org/lager"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/ginkgomon"
 
