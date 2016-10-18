@@ -6,10 +6,11 @@ A helper function for running a pre-configured
 [pprof](http://golang.org/pkg/net/http/pprof/) server in go.
 
 ## Endpoints
+
 - `/log-level`
 
  Sets the log level of the sink passed to the `Runner` method. This endpoint
- expects the request method to be POST and uses the body of the request as the
+ expects the request method to be POST or PUT and uses the body of the request as the
  new log level. For example, `curl -X POST --data 'debug' http://host:port/log-level`
  will set the log level to `debug`.
 
@@ -17,11 +18,10 @@ A helper function for running a pre-configured
 
  Responds with the running program's
  command line, with arguments separated by NUL bytes.
- The package initialization registers it as /debug/pprof/cmdline.
 
 - `/debug/pprof/profile`
 
- Responds with the pprof-formatted cpu profile.
+ Responds with the pprof-formatted CPU profile.
 
 - `/debug/pprof/symbol`
 
@@ -39,7 +39,7 @@ A helper function for running a pre-configured
 ## Remote debugging
 
 Assuming port forwarding is enabled on the local machine from port 17017 to the
-debug server. A program profile can be obtained by running hte following
+debug server, a program profile can be obtained by running the following
 command:
 
 ```
