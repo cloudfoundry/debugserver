@@ -23,6 +23,18 @@ A helper function for running a pre-configured
 
  Responds with the pprof-formatted CPU profile.
 
+- `/debug/pprof/heap`
+
+Responds with the pprof-formatted heap profile.
+
+- `/debug/pprof/block`
+
+Responds with the pprof-formatted goroutine blocking profile.
+
+- `/debug/pprof/trace?seconds=n`
+
+Responds with the pprof-formatted execution trace for n seconds.
+
 - `/debug/pprof/symbol`
 
  Looks up the program counters listed in the request,
