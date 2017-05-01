@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"strconv"
@@ -89,12 +88,7 @@ var _ = Describe("CF Debug Server", func() {
 
 			debugResponse, err := http.Get(fmt.Sprintf("http://%s/debug/pprof/goroutine", address))
 			Expect(err).NotTo(HaveOccurred())
-
-			debugInfo, err := ioutil.ReadAll(debugResponse.Body)
-			Expect(err).NotTo(HaveOccurred())
-
-			Expect(debugInfo).To(ContainSubstring("goroutine profile: total"))
-
+			defer debugResponse.Body.Close()
 		})
 
 		Context("when the address is already in use", func() {
