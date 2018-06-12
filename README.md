@@ -47,6 +47,10 @@ Responds with the pprof-formatted execution trace for n seconds.
  an average of one blocking event per rate nanoseconds spent blocked.
  To include every blocking event in the profile, pass rate = 1.
  To turn off profiling entirely, pass rate <= 0.
+ 
+- `/debug/pprof/goroutine?debug=2`
+
+ Responds with the full goroutine stack dump.
 
 ## Remote debugging
 
