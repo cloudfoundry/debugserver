@@ -52,6 +52,10 @@ Responds with the pprof-formatted execution trace for n seconds.
 
  Responds with the full goroutine stack dump.
 
+- `/debug/pprof/<tracename>`
+
+ Responds with the trace specified by `tracename`. See: https://golang.org/pkg/net/http/pprof/#Index
+
 ## Remote debugging
 
 Assuming port forwarding is enabled on the local machine from port 17017 to the
