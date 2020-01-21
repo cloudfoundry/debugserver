@@ -5,6 +5,10 @@
 A helper function for running a pre-configured
 [pprof](http://golang.org/pkg/net/http/pprof/) server in go.
 
+## Reporting issues and requesting features
+
+Please report all issues and feature requests in [cloudfoundry/diego-release](https://github.com/cloudfoundry/diego-release/issues).
+
 ## Endpoints
 
 - `/log-level`
