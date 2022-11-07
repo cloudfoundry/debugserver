@@ -4,7 +4,7 @@ code.cloudfoundry.org/lager
 code.cloudfoundry.org/lager/internal/truncate
 # github.com/fsnotify/fsnotify v1.4.9
 github.com/fsnotify/fsnotify
-# github.com/google/go-cmp v0.5.8
+# github.com/google/go-cmp v0.5.9
 github.com/google/go-cmp/cmp
 github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
@@ -38,7 +38,7 @@ github.com/onsi/ginkgo/reporters/stenographer
 github.com/onsi/ginkgo/reporters/stenographer/support/go-colorable
 github.com/onsi/ginkgo/reporters/stenographer/support/go-isatty
 github.com/onsi/ginkgo/types
-# github.com/onsi/gomega v1.22.1
+# github.com/onsi/gomega v1.24.0
 ## explicit
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -57,14 +57,13 @@ github.com/onsi/gomega/types
 github.com/tedsuo/ifrit
 github.com/tedsuo/ifrit/ginkgomon
 github.com/tedsuo/ifrit/http_server
-# golang.org/x/net v0.0.0-20220722155237-a158d28d115b
+# golang.org/x/net v0.1.0
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
-# golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f
-golang.org/x/sys/internal/unsafeheader
+# golang.org/x/sys v0.1.0
 golang.org/x/sys/unix
-# golang.org/x/text v0.3.7
+# golang.org/x/text v0.4.0
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
 golang.org/x/text/encoding/htmlindex
