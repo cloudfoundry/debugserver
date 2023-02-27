@@ -1,7 +1,6 @@
-# code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
-## explicit; go 1.16
+# code.cloudfoundry.org/lager v2.0.0+incompatible
+## explicit
 code.cloudfoundry.org/lager
-code.cloudfoundry.org/lager/internal/truncate
 # github.com/fsnotify/fsnotify v1.4.9
 ## explicit; go 1.13
 github.com/fsnotify/fsnotify
