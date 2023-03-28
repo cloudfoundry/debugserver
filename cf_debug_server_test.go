@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	cf_debug_server "code.cloudfoundry.org/debugserver"
-	"code.cloudfoundry.org/lager"
+	lager "code.cloudfoundry.org/lager/v3"
 	"github.com/tedsuo/ifrit"
 	ginkgomon "github.com/tedsuo/ifrit/ginkgomon_v2"
 
