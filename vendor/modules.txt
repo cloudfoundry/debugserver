@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/lager/v3 v3.0.1-0.20230328152424-7eb758d0b4a0
+# code.cloudfoundry.org/lager/v3 v3.0.1
 ## explicit; go 1.19
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
