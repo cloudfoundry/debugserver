@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/lager/v3 v3.0.1
-	github.com/onsi/ginkgo/v2 v2.9.5
+	github.com/onsi/ginkgo/v2 v2.9.7
 	github.com/onsi/gomega v1.27.7
 	github.com/tedsuo/ifrit v0.0.0-20220120221754-dd274de71113
 )
