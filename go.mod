@@ -3,7 +3,7 @@ module code.cloudfoundry.org/debugserver
 go 1.19
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.2.0
+	code.cloudfoundry.org/lager/v3 v3.3.0
 	github.com/onsi/ginkgo/v2 v2.20.1
 	github.com/onsi/gomega v1.34.1
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
