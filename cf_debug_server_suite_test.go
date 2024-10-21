@@ -19,5 +19,5 @@ func TestCfDebugServer(t *testing.T) {
 var _ = SynchronizedBeforeSuite(func() []byte {
 	return nil
 }, func(encodedBuiltArtifacts []byte) {
-	address = fmt.Sprintf("127.0.0.1:%d", 10000+GinkgoParallelNode())
+	address = fmt.Sprintf("127.0.0.1:%d", 10000+GinkgoParallelProcess())
 })
