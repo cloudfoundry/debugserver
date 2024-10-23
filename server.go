@@ -23,7 +23,6 @@ type DebugServerConfig struct {
 
 type ReconfigurableSinkInterface interface {
 	SetMinLevel(level lager.LogLevel)
-	GetMinLevel() lager.LogLevel
 }
 
 func AddFlags(flags *flag.FlagSet) {
