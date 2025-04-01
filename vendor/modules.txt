@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/lager/v3 v3.30.0
+# code.cloudfoundry.org/lager/v3 v3.31.0
 ## explicit; go 1.23.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -65,7 +65,7 @@ github.com/openzipkin/zipkin-go/model
 github.com/tedsuo/ifrit
 github.com/tedsuo/ifrit/ginkgomon_v2
 github.com/tedsuo/ifrit/http_server
-# golang.org/x/net v0.37.0
+# golang.org/x/net v0.38.0
 ## explicit; go 1.23.0
 golang.org/x/net/html
 golang.org/x/net/html/atom
