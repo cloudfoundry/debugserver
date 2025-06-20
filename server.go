@@ -99,13 +99,13 @@ func Handler(sink ReconfigurableSinkInterface) http.Handler {
 		// If the input is not recognized, return a 400 Bad Request.
 		var logLevel lager.LogLevel
 		switch string(level) {
-		case "debug", "d", strconv.Itoa(int(lager.DEBUG)):
+		case "debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG)):
 			logLevel = lager.DEBUG
-		case "info", "i", strconv.Itoa(int(lager.INFO)):
+		case "info", "INFO", "i", strconv.Itoa(int(lager.INFO)):
 			logLevel = lager.INFO
-		case "error", "e", strconv.Itoa(int(lager.ERROR)):
+		case "error", "ERROR", "e", strconv.Itoa(int(lager.ERROR)):
 			logLevel = lager.ERROR
-		case "fatal", "f", strconv.Itoa(int(lager.FATAL)):
+		case "fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL)):
 			logLevel = lager.FATAL
 		default:
 			http.Error(w, "Invalid log level provided: "+string(level), http.StatusBadRequest)
