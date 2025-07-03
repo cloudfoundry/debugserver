@@ -47,21 +47,21 @@ func normalizeLogLevel(input string) string {
 // It also normalizes the various forms of the same log level type. For ex: 0, d, debug are all same.
 func validateAndNormalize(w http.ResponseWriter, r *http.Request, level []byte) (string, error) {
 	if r.Method != http.MethodPost {
-		return "", errors.New("❌ method not allowed, use POST")
+		return "", errors.New("method not allowed, use POST")
 	}
 
 	if r.TLS != nil {
-		return "", errors.New("❌ invalid scheme, https is not allowed")
+		return "", errors.New("invalid scheme, https is not allowed")
 	}
 
 	if len(level) == 0 {
-		return "", errors.New("❌ log level cannot be empty")
+		return "", errors.New("log level cannot be empty")
 	}
 
 	input := strings.TrimSpace(string(level))
 	normalized := normalizeLogLevel(input)
 	if normalized == "" {
-		return "", errors.New("❌ invalid log level: " + string(level))
+		return "", errors.New("invalid log level: " + string(level))
 	}
 
 	return normalized, nil
