@@ -15,7 +15,6 @@ import (
 
 const (
 	DebugFlag = "debugAddr"
-	InvalidLagerLogLevel = 99 
 )
 
 type DebugServerConfig struct {
@@ -73,26 +72,6 @@ func Handler(zapCtrl zapLogLevelController) http.Handler {
 	mux.Handle("/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
 	mux.Handle("/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
 	mux.Handle("/log-level", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// http://<>:<>/log-level -d {0, debug, DEBUG, d}
-		// 		calls zapCtrl.SetMinLevel(lagerLogLevel) -> 0
-		//		calls grlog.SetLoggingLevel(zapLevel.String()) -> "debug"
-		//		calls conf.level.SetLevel(zapcore.DebugLevel)
-		// http://<>:<>/log-level -d {1, info, INFO, I}
-		// 		calls zapCtrl.SetMinLevel(lagerLogLevel) -> 1
-		//		calls grlog.SetLoggingLevel(zapLevel.String()) -> "info"
-		//		calls conf.level.SetLevel(zapcore.InfoLevel)
-		// http://<>:<>/log-level -d {2, warn, WARN, w}
-		// 		calls zapCtrl.SetMinLevel(lager.LogLevel(InvalidLagerLogLevel))  -> 99
-		//		calls conf.level.SetLevel(zapcore.WarnLevel)
-		// http://<>:<>/log-level -d {3, error, ERROR, e}
-		// 		calls zapCtrl.SetMinLevel(lagerLogLevel) -> 2
-		//		calls grlog.SetLoggingLevel(zapLevel.String()) -> "error"
-		//		calls conf.level.SetLevel(zapcore.ErrorLevel)
-		// http://<>:<>/log-level -d {4, fatal, FATAL, f}
-		// 		calls zapCtrl.SetMinLevel(lagerLogLevel) -> 3
-		//		calls grlog.SetLoggingLevel(zapLevel.String()) -> "fatal"
-		//		calls conf.level.SetLevel(zapcore.FatalLevel)
-
 		// Read the log level from the request body.
 		level, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -109,10 +88,10 @@ func Handler(zapCtrl zapLogLevelController) http.Handler {
 		if normalizedLevel == "warn" {
 			// Note that zapcore.WarnLevel is not directly supported by lager.
 			// And lager does not have a separate WARN level, it uses INFO for warnings.
-			// So to set the minimum level to "warn" we send an Invalid log level,
+			// So to set the minimum level to "warn" we send an Invalid log level of 99,
 			// which hits the default case in the SetMinLevel method.
 			// This is a workaround to ensure that the log level is set correctly.
-			zapCtrl.SetMinLevel(lager.LogLevel(InvalidLagerLogLevel)) 
+			zapCtrl.SetMinLevel(lager.LogLevel(99)) 
 		} else {
 			lagerLogLevel, err := lager.LogLevelFromString(normalizedLevel)
 			if err != nil {
@@ -124,9 +103,9 @@ func Handler(zapCtrl zapLogLevelController) http.Handler {
 		// Respond with a success message.
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("✅ /log-level was invoked with Level: " + normalizedLevel + "\n"))
+		w.Write([]byte("/log-level was invoked with Level: " + normalizedLevel + "\n"))
 		if normalizedLevel == "fatal" {
-			w.Write([]byte("ℹ️ Note: Fatal logs are reported as error logs in the Gorouter logs.\n"))
+			w.Write([]byte("Note: Fatal logs are reported as error logs in the Gorouter logs.\n"))
 		}
 	}))
 	mux.Handle("/block-profile-rate", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
