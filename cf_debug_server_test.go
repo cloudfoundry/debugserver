@@ -115,48 +115,6 @@ var _ = Describe("CF Debug Server", func() {
 				Expect(netErr.Op).To(Equal("listen"))
 			})
 		})
-
-		// Context("checking log-level endpoint", func() {
-		// 	validForms := map[lager.LogLevel][]string{
-		// 		lager.DEBUG: {"debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG))},
-		// 		lager.INFO:  {"info", "INFO", "i", strconv.Itoa(int(lager.INFO))},
-		// 		lager.ERROR: {"error", "ERROR", "e", strconv.Itoa(int(lager.ERROR))},
-		// 		lager.FATAL: {"fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL))},
-		// 	}
-
-		// 	//This will add another 16 unit tests to the suit
-		// 	for level, acceptedForms := range validForms {
-		// 		for _, form := range acceptedForms {
-		// 			testLevel := level
-		// 			testForm := form
-
-		// 			It("can reconfigure the given sink with "+form, func() {
-		// 				var err error
-		// 				process, err = cf_debug_server.Run(address, sink)
-		// 				Expect(err).NotTo(HaveOccurred())
-
-		// 				sink.Log(lager.LogFormat{LogLevel: testLevel, Message: "hello before level change"})
-		// 				Eventually(logBuf).ShouldNot(gbytes.Say("hello before level change"))
-
-		// 				request, err := http.NewRequest("POST", fmt.Sprintf("http://%s/log-level", address), bytes.NewBufferString(testForm))
-
-		// 				Expect(err).NotTo(HaveOccurred())
-
-		// 				response, err := http.DefaultClient.Do(request)
-		// 				dump, err := httputil.DumpResponse(response, true)
-		// 				fmt.Println("Response: ", string(dump))
-		// 				Expect(err).NotTo(HaveOccurred())
-
-		// 				Expect(response.StatusCode).To(Equal(http.StatusOK))
-		// 				response.Body.Close()
-
-		// 				sink.Log(lager.LogFormat{LogLevel: testLevel, Message: "Logs sent with log-level " + testForm})
-		// 				Eventually(logBuf).Should(gbytes.Say("Logs sent with log-level " + testForm))
-		// 			})
-		// 		}
-		// 	}
-		// })
-
 	})
 
 	Describe("checking log-level endpoint with various inputs", func() {
