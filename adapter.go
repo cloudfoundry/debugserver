@@ -23,7 +23,7 @@ func (l *LagerAdapter) SetMinLevel(level lager.LogLevel) {
 }
 
 // normalizeLogLevel returns a single value that represents
-// various forms of the same input level. For example: 
+// various forms of the same input level. For example:
 // "0", "d", "debug", all of these represents debug log level.
 func normalizeLogLevel(input string) string {
 	switch strings.ToLower(strings.TrimSpace(input)) {

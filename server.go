@@ -91,13 +91,13 @@ func Handler(zapCtrl zapLogLevelController) http.Handler {
 			// So to set the minimum level to "warn" we send an Invalid log level of 99,
 			// which hits the default case in the SetMinLevel method.
 			// This is a workaround to ensure that the log level is set correctly.
-			zapCtrl.SetMinLevel(lager.LogLevel(99)) 
+			zapCtrl.SetMinLevel(lager.LogLevel(99))
 		} else {
 			lagerLogLevel, err := lager.LogLevelFromString(normalizedLevel)
 			if err != nil {
 				http.Error(w, "Invalid log level: "+err.Error(), http.StatusBadRequest)
 				return
-			}	
+			}
 			zapCtrl.SetMinLevel(lagerLogLevel)
 		}
 		// Respond with a success message.
