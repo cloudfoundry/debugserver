@@ -13,7 +13,7 @@ Running it locally before pushing your commit will ensure the pipeline run will 
 ```
 $ cd <path-to-debugserver-repo>
 $ fly login -c <> -t <> -n <>
-$ fly -t <> execute --input debugserver=./ --config ./tmp/test-debugserver.yml | tee /tmp/debugserver-fly-exec.log
+$ fly -t <> execute --input debugserver=./ --config /tmp/test-debugserver.yml | tee /tmp/debugserver-fly-exec.log
 ```
 
 Create the task file in any directory. For example:
