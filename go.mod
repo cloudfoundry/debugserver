@@ -3,7 +3,7 @@ module code.cloudfoundry.org/debugserver
 go 1.24.0
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.46.0
+	code.cloudfoundry.org/lager/v3 v3.47.0
 	github.com/onsi/ginkgo/v2 v2.25.3
 	github.com/onsi/gomega v1.38.2
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
@@ -18,8 +18,8 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/net v0.44.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
-	golang.org/x/tools v0.36.0 // indirect
+	golang.org/x/tools v0.37.0 // indirect
 )
