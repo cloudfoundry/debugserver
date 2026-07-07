@@ -3,7 +3,7 @@ module code.cloudfoundry.org/debugserver
 go 1.25.0
 
 require (
-	code.cloudfoundry.org/lager/v3 v3.75.0
+	code.cloudfoundry.org/lager/v3 v3.76.0
 	github.com/onsi/ginkgo/v2 v2.32.0
 	github.com/onsi/gomega v1.42.1
 	github.com/tedsuo/ifrit v0.0.0-20260418191334-846868129986
@@ -21,6 +21,6 @@ require (
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/text v0.39.0 // indirect
 	golang.org/x/tools v0.47.0 // indirect
 )
